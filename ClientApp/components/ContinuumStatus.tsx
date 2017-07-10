@@ -56,7 +56,7 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
                     </circle>
                 </a>
             </svg>&nbsp;
-            <a href={status.url} color={ContinuumStatus.mapCtmSeverity(status.severity)} target="_blank">{status.name}</a>
+            <a className="V1SS" href={status.url} color={ContinuumStatus.mapCtmSeverity(status.severity)} target="_blank">{status.name}</a>
         </div>;
     }
 }
