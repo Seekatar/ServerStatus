@@ -1,0 +1,165 @@
+.main-nav li .glyphicon {
+    margin-right: 10px;
+}
+
+/* Highlighting rules for nav menu items */
+.main-nav li a.active,
+.main-nav li a.active:hover,
+.main-nav li a.active:focus {
+    background-color: #4189C7;
+    color: white;
+}
+
+/* Keep the nav menu independent of scrolling and on top of other items */
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+@media (max-width: 767px) {
+    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
+    body {
+        padding-top: 50px;
+    }
+}
+
+@media (min-width: 768px) {
+    /* On small screens, convert the nav menu to a vertical sidebar */
+    .main-nav {
+        height: 100%;
+        width: calc(25% - 20px);
+    }
+    .main-nav .navbar {
+        border-radius: 0px;
+        border-width: 0px;
+        height: 100%;
+    }
+    .main-nav .navbar-header {
+        float: none;
+    }
+    .main-nav .navbar-collapse {
+        border-top: 1px solid #444;
+        padding: 0px;
+    }
+    .main-nav .navbar ul {
+        float: none;
+    }
+    .main-nav .navbar li {
+        float: none;
+        font-size: 15px;
+        margin: 6px;
+    }
+    .main-nav .navbar li a {
+        padding: 10px 16px;
+        border-radius: 4px;
+    }
+    .main-nav .navbar a {
+        /* If a menu item's text is too long, truncate it */
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+body {
+	margin: 0
+}
+
+svg.V1SS {
+	width: 1em;
+	height: 1em;
+}
+
+h1.V1SS {
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	background: lightgray;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: .5em;
+	padding-bottom: 0;
+}
+
+.asof {
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	background: lightgray;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: .5em;
+	padding-left: 4em;
+	padding-top: 0;
+	font-size: smaller;
+}
+
+.zabbix {
+	background: #d40000;
+	padding: .5em;
+	border-radius: .5em;
+	color: white;
+}
+
+.continuum {
+	background: #A8394C;
+	padding: .5em;
+	border-radius: .5em;
+	color: #fafafa;
+}
+
+circle.V1SS {
+	stroke: darkgray;
+	stroke-width: 1
+}
+
+a.V1SS {
+	text-decoration: none;
+	font-size: smaller;
+	vertical-align: middle;
+}
+
+.red {
+	fill: darkred;
+	color: darkred;
+}
+
+.green {
+	fill: green;
+	color: green;
+}
+
+.blue {
+	fill: blue;
+	color: blue;
+}
+
+.gray {
+	fill: gray;
+	color: gray;
+}
+
+.brightRed {
+	fill: red;
+	color: red;
+}
+
+.pending {
+	fill: gainsboro;
+	color: gray;
+}
+
+.status {
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	margin: .5em;
+}
+
+#data {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 0;
+}
+
+#separator {
+	background: lightgray
+}
