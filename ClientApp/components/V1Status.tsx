@@ -10,21 +10,41 @@ interface V1StatusResponse {
     item2: ContinuumStatusState[];
     item3: ZabbixStatusState[];
     loading: boolean;
+    elapsedSeconds: number;
 }
 
 export class V1Status extends React.Component<{}, V1StatusResponse> {
+    private interval = null;
     constructor() {
         super();
         this.state = { item1: "",
                       item2: [],
                       item3: [],
-                       loading: true };
+                       loading: true,
+                       elapsedSeconds: 0 };
 
+        this.fetchData();
+        this.tick = this.tick.bind(this);
+    }
+
+    private fetchData() {
         fetch('api/status')
             .then(response => response.json() as Promise<V1StatusResponse>)
             .then(data => {
                 this.setState({ item1: (new Date(data.item1)).toLocaleTimeString(), item2: data.item2, item3: data.item3, loading: false });
             });
+    }
+
+    public tick() {
+        this.fetchData();
+    }
+
+    public componentDidMount() {
+        this.interval = setInterval(this.tick, 5000);
+    }
+
+    public componentWillUnmount() {
+        clearInterval( this.interval);
     }
 
     public render() {
