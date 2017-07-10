@@ -9,7 +9,8 @@ namespace V1ServerStatus.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        [Route("{count?}")]
+        public IActionResult Index(int count=20)
         {
             return View();
         }

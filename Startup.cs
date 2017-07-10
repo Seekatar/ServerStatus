@@ -50,7 +50,7 @@ namespace V1ServerStatus
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}");
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",

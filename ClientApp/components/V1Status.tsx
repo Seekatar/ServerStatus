@@ -47,6 +47,10 @@ export class V1Status extends React.Component<{}, V1StatusResponse> {
         clearInterval( this.interval);
     }
 
+    public componentDidUpdate() {
+        // this.favicon
+    }
+
     public render() {
           let contents = this.state.loading
             ? <p><em>Loading...</em></p>
