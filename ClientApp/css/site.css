@@ -69,12 +69,12 @@ body {
 	margin: 0
 }
 
-svg.V1SS {
+svg.SS {
 	width: 1em;
 	height: 1em;
 }
 
-h1.V1SS {
+h1.SS {
 	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 	background: lightgray;
 	margin-top: 0;
@@ -108,12 +108,12 @@ h1.V1SS {
 	color: #fafafa;
 }
 
-circle.V1SS {
+circle.SS {
 	stroke: darkgray;
 	stroke-width: 1
 }
 
-a.V1SS {
+a.SS {
 	text-decoration: none;
 	font-size: smaller;
 	vertical-align: middle;

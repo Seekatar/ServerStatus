@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using V1ServerStatus.Controllers;
-using V1ServerStatus.Models;
-using static V1ServerStatus.Models.ContinuumStatus;
+using ServerStatus.Controllers;
+using ServerStatus.Models;
+using static ServerStatus.Models.ContinuumStatus;
 
-namespace V1ServerStatus.Services
+namespace ServerStatus.Services
 {
 	public class ContinuumService
 	{

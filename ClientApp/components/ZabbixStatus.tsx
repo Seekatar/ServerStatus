@@ -47,8 +47,8 @@ export class ZabbixStatus extends React.Component<{ status: ZabbixStatusState[] 
 
     private static renderStatus(key: string, status: ZabbixStatusState) {
         return <div key={key} style={{textAlign:"right"}}>
-            <a className="V1SS" href={status.url} color={ZabbixStatus.mapZabbixPriority(status.priority)} target="_blank">{status.name}</a>&nbsp;
-            <svg className="V1SS" viewBox="0 0 100 100">
+            <a className="SS" href={status.url} color={ZabbixStatus.mapZabbixPriority(status.priority)} target="_blank">{status.name}</a>&nbsp;
+            <svg className="SS" viewBox="0 0 100 100">
                 <defs>
                     <radialGradient id={key+"z"} fx="30%" fy="30%">
                         <stop offset="10%" stopColor="lightgray" />
@@ -56,7 +56,7 @@ export class ZabbixStatus extends React.Component<{ status: ZabbixStatusState[] 
                     </radialGradient>
                 </defs>
                 <a href={status.url} target="_blank">
-                    <circle className="V1SS" cx="50" cy ="50" r="48" fill={"url(#" + key + "z)"}>
+                    <circle className="SS" cx="50" cy ="50" r="48" fill={"url(#" + key + "z)"}>
                         <title>{status.name}</title>
                     </circle>
                 </a>

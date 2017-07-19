@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using V1ServerStatus.Controllers;
-using V1ServerStatus.Models;
+using ServerStatus.Controllers;
+using ServerStatus.Models;
 
-namespace V1ServerStatus.Services
+namespace ServerStatus.Services
 {
 	public class ZabbixService
 	{

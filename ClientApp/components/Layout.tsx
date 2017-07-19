@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { V1Status } from './V1Status';
+import { ServerStatus } from './ServerStatus';
 
 export interface LayoutProps {
     children?: React.ReactNode;
@@ -9,7 +9,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
     public render() {
         return <div className='container-fluid' style={{padding:0}}>
             <div>
-                <V1Status/>
+                <ServerStatus/>
             </div>
         </div>;
     }

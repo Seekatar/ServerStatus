@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using V1ServerStatus.Services;
+using ServerStatus.Services;
 
-namespace V1ServerStatus
+namespace ServerStatus
 {
     public class Startup
     {

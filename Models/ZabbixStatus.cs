@@ -1,6 +1,6 @@
 using System;
 
-namespace V1ServerStatus.Models
+namespace ServerStatus.Models
 {
 	public class ZabbixStatus
 	{

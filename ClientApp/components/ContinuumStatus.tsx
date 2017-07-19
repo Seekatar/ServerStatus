@@ -43,7 +43,7 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
 
     private static renderStatus(key: string, status: ContinuumStatusState) {
         return <div key={key}>
-            <svg className="V1SS" viewBox="0 0 100 100">
+            <svg className="SS" viewBox="0 0 100 100">
                 <defs>
                     <radialGradient id={key} fx="30%" fy="30%">
                         <stop offset="10%" stopColor="lightgray" />
@@ -51,12 +51,12 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
                     </radialGradient>
                 </defs>
                 <a href={status.url} target="_blank">
-                    <circle className="V1SS" cx="50" cy="50" r="48" fill={"url(#" + key + ")"}>
+                    <circle className="SS" cx="50" cy="50" r="48" fill={"url(#" + key + ")"}>
                         <title>{status.name}</title>
                     </circle>
                 </a>
             </svg>&nbsp;
-            <a className="V1SS" href={status.url} color={ContinuumStatus.mapCtmSeverity(status.severity)} target="_blank">{status.name}</a>
+            <a className="SS" href={status.url} color={ContinuumStatus.mapCtmSeverity(status.severity)} target="_blank">{status.name}</a>
         </div>;
     }
 }

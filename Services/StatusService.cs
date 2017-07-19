@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using V1ServerStatus.Models;
+using ServerStatus.Models;
 
-namespace V1ServerStatus.Services
+namespace ServerStatus.Services
 {
 class StatusService : IStatusService
 {
-	const int MAX_COUNT = 40; 
+	const int MAX_COUNT = 40;
 	private ILogger<StatusService> _logger;
 	private ContinuumService _continuum;
 	private ZabbixService _zabbix;

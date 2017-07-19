@@ -5,7 +5,7 @@ import { ZabbixStatusState, ZabbixStatus } from './ZabbixStatus';
 import { ContinuumStatusState, ContinuumStatus } from './ContinuumStatus';
 
 
-interface V1StatusResponse {
+interface StatusResponse {
     item1: string;
     item2: ContinuumStatusState[];
     item3: ZabbixStatusState[];
@@ -13,7 +13,7 @@ interface V1StatusResponse {
     elapsedSeconds: number;
 }
 
-export class V1Status extends React.Component<{}, V1StatusResponse> {
+export class ServerStatus extends React.Component<{}, StatusResponse> {
     private interval = null;
     constructor() {
         super();
@@ -42,7 +42,7 @@ export class V1Status extends React.Component<{}, V1StatusResponse> {
     private fetchData() {
 
         fetch('api/status?count='+this.rowCount())
-            .then(response => response.json() as Promise<V1StatusResponse>)
+            .then(response => response.json() as Promise<StatusResponse>)
             .then(data => {
                 this.setState({ item1: (new Date(data.item1)).toLocaleTimeString(), item2: data.item2, item3: data.item3, loading: false });
             });
@@ -87,7 +87,7 @@ export class V1Status extends React.Component<{}, V1StatusResponse> {
             : this.renderStatus();
 
         return <span>
-            <h1 className="V1SS">VersionOne Server Status</h1>
+            <h1 className="SS">Server Status</h1>
             {contents}
         </span>;
     }

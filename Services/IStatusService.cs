@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using V1ServerStatus.Models;
+using ServerStatus.Models;
 
-namespace V1ServerStatus.Services
+namespace ServerStatus.Services
 {
 public interface IStatusService
 {

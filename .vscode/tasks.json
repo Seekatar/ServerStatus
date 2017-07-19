@@ -8,7 +8,7 @@
     "tasks": [
         {
             "taskName": "build",
-            "args": ["${workspaceRoot}/V1ServerStatus.csproj" ],
+            "args": ["${workspaceRoot}/ServerStatus.csproj" ],
             "isBuildCommand": true,
             "showOutput": "silent",
             "problemMatcher": "$msCompile"

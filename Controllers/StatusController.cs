@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using V1ServerStatus.Models;
+using ServerStatus.Models;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using System;
-using V1ServerStatus.Services;
+using ServerStatus.Services;
 
-namespace V1ServerStatus.Controllers
+namespace ServerStatus.Controllers
 {
 	[Route("api/[controller]")]
 	public class StatusController : Controller
