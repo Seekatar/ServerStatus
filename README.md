@@ -41,7 +41,16 @@ Add a file appsettings.Production.json and set your Continuum key and the Admin 
 ### To run it on Ubuntu:
 
 ```PowerShell
-dotnet V1ServerStatus.dll
+dotnet ServerStatus.dll
 ```
 ### Setting up as a service on Ubuntu
 https://docs.microsoft.com/en-us/aspnet/core/publishing/linuxproduction
+
+For my instance, I just created the service and ran it without the NGINX as described later in the page.  To get the app to listen on all hosts instead of just localhost, `Program.cs` was tweaked to add `UseUrls` as follows:
+```csharp
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseUrls("http://*:5000")
+                .Build();
+```
