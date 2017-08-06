@@ -11,15 +11,17 @@ namespace ServerStatus.Models
 			Canceled,
 			Unknown
 		}
-		public ContinuumStatus(CtmSeverity severity, string name = "", string url = "")
+		public ContinuumStatus(CtmSeverity severity, string name = "", string url = "", string id = "")
 		{
 			Severity = severity;
 			Name = name;
 			Url = url;
+			InstanceId = id;
 		}
 
 		public CtmSeverity Severity { get; set; }
 		public string Name { get; set; }
 		public string Url { get; set; }
+		public string InstanceId { get; set; }
 	}
 }

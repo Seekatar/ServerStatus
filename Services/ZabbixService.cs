@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ServerStatus.Controllers;
 using ServerStatus.Models;
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace ServerStatus.Services
 {
@@ -93,7 +94,7 @@ namespace ServerStatus.Services
 				if (!String.IsNullOrEmpty(result))
 				{
 					dynamic root = JsonConvert.DeserializeObject(result);
-					if (root != null)
+					if (root != null && root.result != null )
 					{
 						_zabbixSessionId = root.result;
 						_logger.LogInformation($"Login OK\nsessionId is {_zabbixSessionId}");
@@ -103,6 +104,11 @@ namespace ServerStatus.Services
 						_logger.LogWarning($"Login failed: {result}");
 					}
 				}
+			}
+			if ( _zabbixSessionId == null )
+			{
+				StatusItems.Add(new ZabbixStatus(5, "Zabbix login failed"));
+				return;
 			}
 
 			// get status
@@ -127,34 +133,42 @@ namespace ServerStatus.Services
 			if (!String.IsNullOrEmpty(result))
 			{
 				dynamic root = JsonConvert.DeserializeObject(result);
+			
 				if (root != null)
 				{
-					string s = root.ToString();
-					s = root.result.ToString();
-					s = root.result.Count.ToString();
-					_logger.LogInformation($"Event OK\nLength of events is {root.result.Count}");
-					int i = 0;
-					foreach (var o in root.result)
+					try
 					{
-						s = o.r_eventid.ToString();
-						_logger.LogDebug(s);
-						s = o.objectid.ToString();
-						_logger.LogDebug(s);
-						_events[i].triggerid = Int32.Parse(o.objectid.ToString());
-						_events[i].eventid = Int32.Parse(o.eventid.ToString());
-						_events[i].recovered = o.r_eventid.ToString() != "0";
-						i++;
-					}
-					for (i = 0; i < totalCount && _events[i].eventid != 0; i++)
-					{
-						StatusItems.Add(mapZabbixStatus(_events[i]));
-					}
-					for (int j = i; j < totalCount; j++)
-					{
-						_events[startIndex + j].eventid = 0;
-						StatusItems.Add(new ZabbixStatus(0));
-					}
+						string s = root.ToString();
+						s = root.result.ToString();
+						s = root.result.Count.ToString();
+						_logger.LogInformation($"Event OK\nLength of events is {root.result.Count}");
+						int i = 0;
+						foreach (var o in root.result)
+						{
+							s = o.r_eventid.ToString();
+							_logger.LogDebug(s);
+							s = o.objectid.ToString();
+							_logger.LogDebug(s);
+							_events[i].triggerid = Int32.Parse(o.objectid.ToString());
+							_events[i].eventid = Int32.Parse(o.eventid.ToString());
+							_events[i].recovered = o.r_eventid.ToString() != "0";
+							i++;
+						}
+						for (i = 0; i < totalCount && _events[i].eventid != 0; i++)
+						{
+							StatusItems.Add(mapZabbixStatus(_events[i]));
+						}
+						for (int j = i; j < totalCount; j++)
+						{
+							_events[startIndex + j].eventid = 0;
+							StatusItems.Add(new ZabbixStatus(0));
+						}
 
+					}
+					catch (RuntimeBinderException e)
+					{
+						_logger.LogWarning($"Event failed: {e}");
+					}
 				}
 			}
 			else

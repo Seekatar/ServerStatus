@@ -23,22 +23,38 @@ class StatusService : IStatusService
 		_zabbix = new ZabbixService(configuration,logger);
 	}
 
-	public (DateTime LastUpate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) GetStatus(int count)
-	{
-		if (DateTime.Now - _lastRetrieval > _retrievalInterval)
+		public PipelineStatus GetContinuumPipelineStatus(string instanceId)
 		{
-			_continuum.PollStatus(MAX_COUNT);
-			_zabbix.PollStatus(MAX_COUNT);
-			_lastRetrieval = DateTime.Now;
+			// TODO 
+			return new PipelineStatus();
 		}
-		return (_lastRetrieval, _continuum.StatusItems.Take(count), _zabbix.StatusItems.Take(count));
-	}
 
-	public 	(IEnumerable<ContinuumStatus.CtmSeverity> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
-	{
-		(DateTime lastUpdate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) = GetStatus(count);
-		return (ContinuumStatus.Select(o => o.Severity),ZabbixStatus.Select(o=>o.Priority));
-	}
+		public (DateTime LastUpate, IEnumerable<ContinuumStatus> ContinuumStatus) GetContinuumStatus(int count)
+		{
+			if (DateTime.Now - _lastRetrieval > _retrievalInterval)
+			{
+				_continuum.PollStatus(MAX_COUNT);
+				_lastRetrieval = DateTime.Now;
+			}
+			return (_lastRetrieval, _continuum.StatusItems.Take(count));
+		}
+
+		public (DateTime LastUpate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) GetStatus(int count)
+		{
+			if (DateTime.Now - _lastRetrieval > _retrievalInterval)
+			{
+				_continuum.PollStatus(MAX_COUNT);
+				_zabbix.PollStatus(MAX_COUNT);
+				_lastRetrieval = DateTime.Now;
+			}
+			return (_lastRetrieval, _continuum.StatusItems.Take(count), _zabbix.StatusItems.Take(count));
+		}
+
+		public 	(IEnumerable<ContinuumStatus.CtmSeverity> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
+		{
+			(DateTime lastUpdate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) = GetStatus(count);
+			return (ContinuumStatus.Select(o => o.Severity),ZabbixStatus.Select(o=>o.Priority));
+		}
 
 }
 

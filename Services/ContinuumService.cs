@@ -58,27 +58,28 @@ namespace ServerStatus.Services
 					if (parts.Length == 6)
 					{
 						var last = parts.Last();
+						var id = parts[0];
 						var name = String.Join(" ", parts.Skip(2).Take(3));
 						var url = String.Format(_continuumLink, parts[0]);
 						if (last.Equals("success"))
 						{
-							StatusItems.Add(new ContinuumStatus(CtmSeverity.Ok, name, url));
+							StatusItems.Add(new ContinuumStatus(CtmSeverity.Ok, name, url, id));
 						}
 						else if (last.Equals("failure"))
 						{
-							StatusItems.Add(new ContinuumStatus(CtmSeverity.Failed, name, url));
+							StatusItems.Add(new ContinuumStatus(CtmSeverity.Failed, name, url, id));
 						}
 						else if (last.Equals("processing"))
 						{
-							StatusItems.Add(new ContinuumStatus(CtmSeverity.Running, name, url));
+							StatusItems.Add(new ContinuumStatus(CtmSeverity.Running, name, url, id));
 						}
 						else if (last.Equals("staged"))
 						{
-							StatusItems.Add(new ContinuumStatus(CtmSeverity.Staged, name, url));
+							StatusItems.Add(new ContinuumStatus(CtmSeverity.Staged, name, url, id));
 						}
 						else if (last.Equals("canceled"))
 						{
-							StatusItems.Add(new ContinuumStatus(CtmSeverity.Canceled, name, url));
+							StatusItems.Add(new ContinuumStatus(CtmSeverity.Canceled, name, url, id));
 						}
 						else
 						{

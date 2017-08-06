@@ -9,7 +9,13 @@ namespace ServerStatus.Controllers
 {
     public class HomeController : Controller
     {
+		/// <summary>
+		/// Get the Continuum and Zabbix HTML page
+		/// </summary>
+		/// <param name="count">count of items to return, defaults to 20, max 50</param>
+		/// <returns>Continuum and Zabbix HTML page</returns>
         [Route("{count?}")]
+		[HttpGet]
         public IActionResult Index(int count=20)
         {
             return View();
