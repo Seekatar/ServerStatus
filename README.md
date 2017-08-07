@@ -20,6 +20,8 @@ You can debug from Visual Studio Code or Visual Studio 2017 (15.3.0 Preview 2.0)
 To run manually, in the repo's folder:
 
 ```PowerShell
+# this controls which app settings file is read.  VS and VSCode will set this for you.
+$env:ASPNETCORE_ENVIRONMENT="Development"
 dotnet restore
 dotnet run
 ```
