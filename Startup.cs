@@ -107,7 +107,8 @@ namespace ServerStatus
                     if (context.WebSockets.IsWebSocketRequest)
                     {
                         WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await SendClientUpdates(context, webSocket);
+						var ss = context.RequestServices.GetRequiredService<IStatusService>();
+						await ss.SocketConnected(context, webSocket);
                     }
                     else
                     {

@@ -10,6 +10,7 @@ using ServerStatus.Controllers;
 using ServerStatus.Models;
 using static ServerStatus.Models.ContinuumStatus;
 using static System.Diagnostics.Debug;
+using System.Timers;
 
 namespace ServerStatus.Services
 {
@@ -108,7 +109,10 @@ namespace ServerStatus.Services
 		{
 			try
 			{
-				getContinuumStatus(count);
+				lock (this)
+				{
+					getContinuumStatus(count);
+				}
 			}
 			catch (Exception e)
 			{
@@ -116,10 +120,12 @@ namespace ServerStatus.Services
 			}
 		}
 
+		public List<ContinuumStatus> UpdatedItems = new List<ContinuumStatus>();
+
 		private void getContinuumStatus(int maxItems)
 		{
 			var statusItems = new List<ContinuumStatus>();
-			var updatedItems = new List<ContinuumStatus>();
+			UpdatedItems.Clear();
 
 			try
 			{
@@ -168,11 +174,11 @@ namespace ServerStatus.Services
 					if (count == maxItems)
 						break;
 				}
-				updatedItems = statusItems.Except(StatusItems, new StatusComparer() ).ToList();
-				updatedItems.AddRange(statusItems.Where( o => StatusItems.Any( o2 => o2.InstanceId == o.InstanceId && o2.Severity != o.Severity) ));
-				if ( updatedItems.Count > 0 )
+				UpdatedItems = statusItems.Except(StatusItems, new StatusComparer() ).ToList();
+				UpdatedItems.AddRange(statusItems.Where( o => StatusItems.Any( o2 => o2.InstanceId == o.InstanceId && o2.Severity != o.Severity) ));
+				if ( UpdatedItems.Count > 0 )
 				{
-					foreach ( var i in updatedItems )
+					foreach ( var i in UpdatedItems )
 					{
 						WriteLine($"Updated pipeline {i.InstanceId} {i.Name} ");
 					}

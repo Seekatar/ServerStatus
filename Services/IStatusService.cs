@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Net.WebSockets;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using ServerStatus.Models;
 
 namespace ServerStatus.Services
@@ -36,6 +39,13 @@ namespace ServerStatus.Services
 		/// <param name="count">count of items to return, defaults to 12, max 50</param>
 		/// <returns>Continuum, and Zabbix statuses ids</returns>
 		(IEnumerable<ContinuumStatus.CtmSeverity> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12);
+		/// <summary>
+		/// called when a websocket client attaches
+		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="webSocket"></param>
+		/// <returns></returns>
+		Task SocketConnected(HttpContext context, WebSocket webSocket);
 	}
 
 }
