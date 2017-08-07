@@ -21,25 +21,27 @@ class StatusService : IStatusService
 		_logger = logger;
 		_continuum = new ContinuumService(configuration,logger);
 		_zabbix = new ZabbixService(configuration,logger);
+		int tempInt = 30;
+		int.TryParse(configuration["Config:POLLING_INTERVAL_SEC"], out tempInt);
+		_retrievalInterval = TimeSpan.FromSeconds(Math.Min(Math.Max(tempInt,3),120));
 	}
 
 		public PipelineStatus GetContinuumPipelineStatus(string instanceId)
 		{
-			// TODO 
-			return new PipelineStatus();
+			return _continuum.GetPipelineStatus(instanceId);
 		}
 
-		public (DateTime LastUpate, IEnumerable<ContinuumStatus> ContinuumStatus) GetContinuumStatus(int count)
+		public LastContinuumStatus GetContinuumStatus(int count)
 		{
 			if (DateTime.Now - _lastRetrieval > _retrievalInterval)
 			{
 				_continuum.PollStatus(MAX_COUNT);
 				_lastRetrieval = DateTime.Now;
 			}
-			return (_lastRetrieval, _continuum.StatusItems.Take(count));
+			return new LastContinuumStatus(_lastRetrieval, _continuum.StatusItems.Take(count));
 		}
 
-		public (DateTime LastUpate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) GetStatus(int count)
+		public (DateTime LastUpate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) GetStatus(int maxItems)
 		{
 			if (DateTime.Now - _lastRetrieval > _retrievalInterval)
 			{
@@ -47,7 +49,7 @@ class StatusService : IStatusService
 				_zabbix.PollStatus(MAX_COUNT);
 				_lastRetrieval = DateTime.Now;
 			}
-			return (_lastRetrieval, _continuum.StatusItems.Take(count), _zabbix.StatusItems.Take(count));
+			return (_lastRetrieval, _continuum.StatusItems.Take(maxItems), _zabbix.StatusItems.Take(maxItems));
 		}
 
 		public 	(IEnumerable<ContinuumStatus.CtmSeverity> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)

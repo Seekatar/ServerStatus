@@ -12,7 +12,7 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace ServerStatus.Services
 {
-	public class ZabbixService
+	class ZabbixService
 	{
 		const int EVENT_CACHE_SIZE = 100;
 		const int High = 5;

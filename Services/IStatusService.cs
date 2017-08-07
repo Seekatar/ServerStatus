@@ -8,7 +8,7 @@ namespace ServerStatus.Services
 	/// Interface for getting server statuses
 	/// </summary>
 	public interface IStatusService
-{
+	{
 		/// <summary>
 		/// Get both Continuum and Zabbix status details
 		/// </summary>
@@ -21,7 +21,7 @@ namespace ServerStatus.Services
 		/// </summary>
 		/// <param name="count">count of items to return, defaults to 20, max 50</param>
 		/// <returns>Last Update, Continuum statuses</returns>
-		(DateTime LastUpate, IEnumerable<ContinuumStatus> ContinuumStatus) GetContinuumStatus(int count);
+		LastContinuumStatus GetContinuumStatus(int count);
 
 		/// <summary>
 		/// Get the details about a pipeline instance
@@ -36,8 +36,6 @@ namespace ServerStatus.Services
 		/// <param name="count">count of items to return, defaults to 12, max 50</param>
 		/// <returns>Continuum, and Zabbix statuses ids</returns>
 		(IEnumerable<ContinuumStatus.CtmSeverity> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12);
-
-
-}
+	}
 
 }

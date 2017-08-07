@@ -8,6 +8,9 @@ using ServerStatus.Services;
 
 namespace ServerStatus.Controllers
 {
+	/// <summary>
+	/// controller for the API
+	/// </summary>
 	[Route("api/[controller]")]
 	public class StatusController : Controller
 	{
@@ -15,6 +18,11 @@ namespace ServerStatus.Controllers
 		private DateTime _lastRetrieval = DateTime.Now - TimeSpan.FromDays(1);
 		private TimeSpan _retrievalInterval = TimeSpan.FromSeconds(10);
 
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="service"></param>
+		/// <param name="logger"></param>
 		public StatusController(IStatusService service, ILogger<StatusController> logger)
 		{
 			_service = service;
@@ -26,7 +34,7 @@ namespace ServerStatus.Controllers
 		/// <param name="count">count of items to return, defaults to 12, max 50</param>
 		/// <returns>Last Update, Continuum, and Zabbix statuses</returns>
 		[HttpGet("continuum")]
-		public (DateTime LastRetrieval, IEnumerable<ContinuumStatus> ContinuumStatus) GetContinuumStatus(int count = 12)
+		public LastContinuumStatus GetContinuumStatus(int count = 12)
 		{
 			return _service.GetContinuumStatus(count);
 		}

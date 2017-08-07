@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,20 +15,33 @@ using System.IO;
 
 namespace ServerStatus
 {
-    public class Startup
+	/// <summary>
+	/// Startup class for ASP.NET
+	/// </summary>
+	public class Startup
     {
         const int BUFFER_SIZE = 100;
         const int KEEP_ALIVE_SEC = 120;
 
+		/// <summary>
+		/// constructor
+		/// </summary>
+		/// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+		/// <summary>
+		/// get the config object
+		/// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+		/// <summary>
+		/// This method gets called by the runtime. Use this method to add services to the container.
+		/// </summary>
+		/// <param name="services"></param>
+		public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IStatusService, StatusService>();
             services.AddMvc();
@@ -49,8 +60,12 @@ namespace ServerStatus
 
 		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		/// <summary>
+		/// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		/// </summary>
+		/// <param name="app"></param>
+		/// <param name="env"></param>
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -133,6 +148,8 @@ namespace ServerStatus
 					if ( rcv.Status == TaskStatus.RanToCompletion && !rcv.Result.CloseStatus.HasValue )
 						rcv = webSocket.ReceiveAsync(new ArraySegment<byte>(rcvBuffer), CancellationToken.None);
 				}
+
+
 
 				// TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST
 				var buffer = System.Text.Encoding.UTF8.GetBytes(DateTime.Now.ToString());
