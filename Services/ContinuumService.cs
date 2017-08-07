@@ -1,16 +1,13 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using ServerStatus.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using ServerStatus.Controllers;
-using ServerStatus.Models;
 using static ServerStatus.Models.ContinuumStatus;
 using static System.Diagnostics.Debug;
-using System.Timers;
 
 namespace ServerStatus.Services
 {
@@ -20,6 +17,8 @@ namespace ServerStatus.Services
 		private string _ctmKey;
 		private string _continuumLink;
 		private ILogger _logger { get; set; }
+		public List<ContinuumStatus> _statusItems = new List<ContinuumStatus>();
+		public List<ContinuumStatus> _updatedItems = new List<ContinuumStatus>();
 
 		public ContinuumService(IConfiguration configuration, ILogger logger)
 		{
@@ -29,7 +28,8 @@ namespace ServerStatus.Services
 			_logger = logger;
 		}
 
-		public IList<ContinuumStatus> StatusItems = new List<ContinuumStatus>();
+		public IEnumerable<ContinuumStatus> StatusItems => _statusItems;
+		public IEnumerable<ContinuumStatus> GetUpdates() { var ret = _updatedItems; _updatedItems = new List<ContinuumStatus>(); return ret; }
 
 		internal PipelineStatus GetPipelineStatus(string instanceId)
 		{
@@ -98,10 +98,6 @@ namespace ServerStatus.Services
 				}
 
 			}
-
-			//WriteLine($"Total {total} Success {totalSuccess} Failed {totalFailed} Index {runningIndex} Skipped {totalSkipped} Complete {100 * runningIndex / total}%");
-			//WriteLine($"Pending step is {pendingStepNo}");
-			//WriteLine($"Status is {piStatus} at '{currentPhase}'->'{currentStage}'->'{currentStep}'");
 			return piStatus;
 		}
 
@@ -109,10 +105,7 @@ namespace ServerStatus.Services
 		{
 			try
 			{
-				lock (this)
-				{
-					getContinuumStatus(count);
-				}
+				getContinuumStatus(count);
 			}
 			catch (Exception e)
 			{
@@ -120,12 +113,10 @@ namespace ServerStatus.Services
 			}
 		}
 
-		public List<ContinuumStatus> UpdatedItems = new List<ContinuumStatus>();
-
 		private void getContinuumStatus(int maxItems)
 		{
 			var statusItems = new List<ContinuumStatus>();
-			UpdatedItems.Clear();
+			_updatedItems.Clear();
 
 			try
 			{
@@ -174,23 +165,23 @@ namespace ServerStatus.Services
 					if (count == maxItems)
 						break;
 				}
-				UpdatedItems = statusItems.Except(StatusItems, new StatusComparer() ).ToList();
-				UpdatedItems.AddRange(statusItems.Where( o => StatusItems.Any( o2 => o2.InstanceId == o.InstanceId && o2.Severity != o.Severity) ));
-				if ( UpdatedItems.Count > 0 )
+				_updatedItems = statusItems.Except(StatusItems, new StatusComparer() ).ToList();
+				_updatedItems.AddRange(statusItems.Where( o => _statusItems.Any( o2 => o2.InstanceId == o.InstanceId && o2.Severity != o.Severity) ));
+				if ( _updatedItems.Count > 0 )
 				{
-					foreach ( var i in UpdatedItems )
+					foreach ( var i in _updatedItems )
 					{
 						WriteLine($"Updated pipeline {i.InstanceId} {i.Name} ");
 					}
 				}
-				StatusItems = statusItems;
+				_statusItems = statusItems;
 			}
 			catch (Exception e)
 			{
 				_logger.LogCritical(e, "Error getting continuum data");
-				StatusItems.Add( new ContinuumStatus(CtmSeverity.failure,
+				_statusItems.Add( new ContinuumStatus(CtmSeverity.failure,
 					$"Exception getting Continuum data"));
-				StatusItems.Add( new ContinuumStatus(CtmSeverity.failure,
+				_statusItems.Add( new ContinuumStatus(CtmSeverity.failure,
 					e.Message));
 			}
 		}

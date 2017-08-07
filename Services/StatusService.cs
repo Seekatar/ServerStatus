@@ -1,15 +1,14 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using ServerStatus.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using ServerStatus.Models;
 using System.Threading;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace ServerStatus.Services
@@ -43,11 +42,7 @@ namespace ServerStatus.Services
 		{
 			_timer.Enabled = false;
 			_continuum.PollStatus(MAX_COUNT);
-			if ( _continuum.UpdatedItems.Count > 0 )
-			{
-				sendUpdates(_continuum.UpdatedItems);
-				_continuum.UpdatedItems.Clear();
-			}
+			sendUpdates(_continuum.GetUpdates());
 			_timer.Enabled = true;
 		}
 
