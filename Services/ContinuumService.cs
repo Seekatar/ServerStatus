@@ -118,11 +118,12 @@ namespace ServerStatus.Services
 			var statusItems = new List<ContinuumStatus>();
 			_updatedItems.Clear();
 
+			var uri = _ctmUrl + $"list_pipelineinstances?&since={(DateTime.Now - TimeSpan.FromDays(3)).ToString("MM - dd - yyyy")}&output_format=text&header=false";
 			try
 			{
 				var wc = new WebClient();
 				wc.Headers["Authorization"] = $"token {_ctmKey}";
-				var result = wc.DownloadString(new Uri(_ctmUrl + $"list_pipelineinstances?&since={(DateTime.Now - TimeSpan.FromDays(3)).ToString("MM - dd - yyyy")}&output_format=text&header=false"));
+				var result = wc.DownloadString(new Uri(uri));
 
 				var lines = result.Split("\r\n".ToCharArray());
 				int count = 0;
@@ -165,11 +166,11 @@ namespace ServerStatus.Services
 					if (count == maxItems)
 						break;
 				}
-				_updatedItems = statusItems.Except(StatusItems, new StatusComparer() ).ToList();
-				_updatedItems.AddRange(statusItems.Where( o => _statusItems.Any( o2 => o2.InstanceId == o.InstanceId && o2.Severity != o.Severity) ));
-				if ( _updatedItems.Count > 0 )
+				_updatedItems = statusItems.Except(StatusItems, new StatusComparer()).ToList();
+				_updatedItems.AddRange(statusItems.Where(o => _statusItems.Any(o2 => o2.InstanceId == o.InstanceId && o2.Severity != o.Severity)));
+				if (_updatedItems.Count > 0)
 				{
-					foreach ( var i in _updatedItems )
+					foreach (var i in _updatedItems)
 					{
 						WriteLine($"Updated pipeline {i.InstanceId} {i.Name} ");
 					}
@@ -178,9 +179,9 @@ namespace ServerStatus.Services
 			}
 			catch (Exception e)
 			{
-				_logger.LogCritical(e, "Error getting continuum data");
+				_logger.LogCritical(e, $"Error getting continuum data from {uri}");
 				_statusItems.Add( new ContinuumStatus(CtmSeverity.failure,
-					$"Exception getting Continuum data"));
+					$"Exception getting Continuum data from {uri}"));
 				_statusItems.Add( new ContinuumStatus(CtmSeverity.failure,
 					e.Message));
 			}

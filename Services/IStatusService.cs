@@ -39,6 +39,7 @@ namespace ServerStatus.Services
 		/// <param name="count">count of items to return, defaults to 12, max 50</param>
 		/// <returns>Continuum, and Zabbix statuses ids</returns>
 		(IEnumerable<ContinuumStatus.CtmSeverity> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12);
+
 		/// <summary>
 		/// called when a websocket client attaches
 		/// </summary>

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ServerStatus.Controllers
 {
+	/// <summary>
+	/// controller for UI 
+	/// </summary>
     public class HomeController : Controller
     {
 		/// <summary>
@@ -21,6 +24,10 @@ namespace ServerStatus.Controllers
             return View();
         }
 
+		/// <summary>
+		/// Get the Error
+		/// </summary>
+		/// <returns></returns>
         public IActionResult Error()
         {
             ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
