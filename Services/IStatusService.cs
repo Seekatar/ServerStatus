@@ -47,6 +47,19 @@ namespace ServerStatus.Services
 		/// <param name="webSocket"></param>
 		/// <returns></returns>
 		Task SocketConnected(HttpContext context, WebSocket webSocket);
+
+		/// <summary>
+		/// Confirms the pipeline step.
+		/// </summary>
+		/// <param name="instanceId">The instance identifier.</param>
+		/// <param name="phase">The phase.</param>
+		/// <param name="stage">The stage.</param>
+		/// <param name="stepIndex">Index of the step.</param>
+		/// <param name="response">The response.</param>
+		/// <param name="outputKey">The output key.</param>
+		/// <param name="confirm">if set to <c>true</c> [confirm].</param>
+		/// <returns></returns>
+		bool ConfirmContinuumPipelineStep(string instanceId, string phase, string stage, int stepIndex, string response, string outputKey, bool confirm);
 	}
 
 }
