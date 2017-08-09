@@ -5,6 +5,9 @@ export interface ContinuumStatusState {
     severity: number;
     name: string;
     url: string;
+    group: string;
+    pipelineName: string;
+    project: string;
 }
 
 export class ContinuumStatus extends React.Component<{ status: ContinuumStatusState[] }, ContinuumStatusState[]> {
@@ -36,6 +39,10 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
                 return "red";
             case 4: // ContinuumStatus.CtmSeverity.Canceled:
                 return "gray";
+            case 5: // ContinuumStatus.CtmSeverity.notRunYet:
+                return "gray";
+            case 6: // ContinuumStatus.CtmSeverity.pending:
+                return "lightblue";
             default:
                 return "black";
         }
@@ -56,7 +63,7 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
                     </circle>
                 </a>
             </svg>&nbsp;
-            <a className="SS" href={status.url} color={ContinuumStatus.mapCtmSeverity(status.severity)} target="_blank">{status.name}</a>
+            <a className="SS" href={status.url} color={ContinuumStatus.mapCtmSeverity(status.severity)} target="_blank">{status.name} {status.pipelineName} {status.group}</a>
         </div>;
     }
 }

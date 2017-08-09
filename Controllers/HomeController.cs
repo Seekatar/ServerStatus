@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ServerStatus.Controllers
@@ -10,7 +6,7 @@ namespace ServerStatus.Controllers
 	/// <summary>
 	/// controller for UI 
 	/// </summary>
-    public class HomeController : Controller
+	public class HomeController : Controller
     {
 		/// <summary>
 		/// Get the Continuum and Zabbix HTML page

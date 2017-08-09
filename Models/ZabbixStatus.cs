@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 
 namespace ServerStatus.Models
@@ -23,15 +24,19 @@ namespace ServerStatus.Models
 		/// <summary>
 		/// prority of the item
 		/// </summary>
+		[JsonProperty(PropertyName = "priority")]
+
 		public UInt16 Priority { get; set; }
 		/// <summary>
 		/// name 
 		/// </summary>
+		[JsonProperty(PropertyName = "name")]
 		public string Name { get; set; }
 
 		/// <summary>
 		/// URL to Zabbix error
 		/// </summary>
+		[JsonProperty(PropertyName = "url")]
 		public string Url { get; set; }
 	}
 }

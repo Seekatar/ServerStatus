@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using ServerStatus.Models;
-using System.Linq;
 using Microsoft.Extensions.Logging;
 using System;
 using ServerStatus.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServerStatus.Controllers
 {
@@ -55,10 +55,40 @@ namespace ServerStatus.Controllers
 		/// </summary>
 		/// <param name="instanceId">instanceId of a pipeline</param>
 		/// <returns>Pipeline status object</returns>
-		[HttpGet("pipelineInstance")]
-		public PipelineStatus GetContinuumPipelineStatus(string instanceId)
+		/// <response code="200">Found the pipeline instance</response>
+		/// <response code="404">If the instance id is not found</response>
+		[HttpGet("pipelineInstance/{instanceId}")]
+		[ProducesResponseType(404)]
+		public IActionResult GetPipelineStatus(string instanceId)
 		{
-			return _service.GetContinuumPipelineStatus(instanceId);
+			var ret = _service.GetContinuumPipelineStatus(instanceId);
+			if (ret != null)
+				return Ok(ret);
+			else
+				return NotFound();
+		}
+
+		/// <summary>
+		/// Confirms the pipeline step that is pending.
+		/// </summary>
+		/// <param name="instanceId">The instance identifier.</param>
+		/// <param name="phase">The phase.</param>
+		/// <param name="stage">The stage.</param>
+		/// <param name="stepIndex">Index of the step.</param>
+		/// <param name="response">The response from the user.</param>
+		/// <param name="outputKey">The output key from the pipleine.</param>
+		/// <param name="confirm">if set to <c>true</c> will confirm, else deny.</param>
+		/// <returns></returns>
+		/// <exception cref="NotImplementedException"></exception>
+		[HttpPut("pipelineInstance/{instanceId}/{phase}/{stage}/{stepIndex}")]
+		public IActionResult ConfirmPipelineStep(string instanceId, string phase, string stage, int stepIndex, [FromBody, Required] string response, [FromBody, Required] string outputKey, [FromBody, Required] bool confirm )
+		{
+			// confirm result = "success" or "failure"
+			if (_service.ConfirmContinuumPipelineStep(instanceId, phase, stage, stepIndex, response, outputKey, confirm))
+				return Ok();
+			else
+				return NotFound();
+
 		}
 
 		/// <summary>
