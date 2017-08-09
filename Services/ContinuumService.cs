@@ -221,7 +221,6 @@ namespace ServerStatus.Services
 			var uri = _ctmUrl + $"update_pi_step_status?pi={instanceId}&phase={phase}&stage={stage}&step={stepIndex}&detail={response}&result_key={outputKey}&status={status}";
 			try
 			{
-				bool ret = false;
 				var wc = new WebClient();
 				wc.Headers["Authorization"] = $"token {_ctmKey}";
 				var result = wc.DownloadString(new Uri(uri));
@@ -236,7 +235,7 @@ namespace ServerStatus.Services
 					}
 				*/
 				dynamic returnMsg = JsonConvert.DeserializeObject(result);
-				if (string.IsNullOrEmpty(returnMsg.ErrorCode) && returnMsg.Response.result.IndexOf("updated") > 0)
+				if (string.IsNullOrEmpty(returnMsg.ErrorCode.ToString()) && returnMsg.Response.result.ToString().IndexOf("updated") > 0)
 					return true;
 				else
 					throw new Exception($"Error updating step: {returnMsg.ErrorMessage}({returnMsg.ErrorCode}) {returnMsg.ErrorDetail}");

@@ -75,16 +75,16 @@ namespace ServerStatus.Controllers
 		/// <param name="phase">The phase.</param>
 		/// <param name="stage">The stage.</param>
 		/// <param name="stepIndex">Index of the step.</param>
-		/// <param name="response">The response from the user.</param>
-		/// <param name="outputKey">The output key from the pipleine.</param>
-		/// <param name="confirm">if set to <c>true</c> will confirm, else deny.</param>
+		/// <param name="options">The options.</param>
 		/// <returns></returns>
 		/// <exception cref="NotImplementedException"></exception>
-		[HttpPut("pipelineInstance/{instanceId}/{phase}/{stage}/{stepIndex}")]
-		public IActionResult ConfirmPipelineStep(string instanceId, string phase, string stage, int stepIndex, [FromBody, Required] string response, [FromBody, Required] string outputKey, [FromBody, Required] bool confirm )
+		[HttpPost("pipelineInstance/{instanceId}/{phase}/{stage}/{stepIndex}")]
+		public IActionResult ConfirmPipelineStep(string instanceId, string phase, string stage, int stepIndex, 
+			[FromBody, Required] ConfirmOptions options )
+												// [FromBody, Required] string response, [FromBody, Required] string outputKey, [FromBody, Required] bool confirm )
 		{
 			// confirm result = "success" or "failure"
-			if (_service.ConfirmContinuumPipelineStep(instanceId, phase, stage, stepIndex, response, outputKey, confirm))
+			if (_service.ConfirmContinuumPipelineStep(instanceId, phase, stage, stepIndex, options.Response, options.OutputKey, options.Confirm))
 				return Ok();
 			else
 				return NotFound();
