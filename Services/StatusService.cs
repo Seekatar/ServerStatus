@@ -20,7 +20,6 @@ namespace ServerStatus.Services
 		private ContinuumService _continuum;
 		private ZabbixService _zabbix;
 		private DateTime _lastRetrieval = DateTime.Now - TimeSpan.FromDays(1);
-		private TimeSpan _retrievalInterval = TimeSpan.FromSeconds(30);
 		private System.Timers.Timer _timer;
 
 		public StatusService(IConfiguration configuration, ILogger<StatusService> logger)
@@ -30,9 +29,8 @@ namespace ServerStatus.Services
 			_zabbix = new ZabbixService(configuration, logger);
 			int tempInt = 30;
 			int.TryParse(configuration["Config:POLLING_INTERVAL_SEC"], out tempInt);
-			_retrievalInterval = TimeSpan.FromSeconds(Math.Min(Math.Max(tempInt, 3), 120));
 
-			_timer = new System.Timers.Timer(5000);
+			_timer = new System.Timers.Timer(Math.Min(Math.Max(tempInt, 1), 120) * 1000);
 			_timer.Elapsed += poll;
 			_timer.Start();
 
@@ -42,6 +40,8 @@ namespace ServerStatus.Services
 		{
 			_timer.Enabled = false;
 			_continuum.PollStatus(MAX_COUNT);
+			// TODO UNCOMMENT OUT OR RUN ASYNC_zabbix.PollStatus(MAX_COUNT);
+			_lastRetrieval = DateTime.Now;
 			sendUpdates(_continuum.GetUpdates());
 			_timer.Enabled = true;
 		}
@@ -54,22 +54,11 @@ namespace ServerStatus.Services
 
 		public LastContinuumStatus GetContinuumStatus(int count)
 		{
-			if (DateTime.Now - _lastRetrieval > _retrievalInterval)
-			{
-				_continuum.PollStatus(MAX_COUNT);
-				_lastRetrieval = DateTime.Now;
-			}
 			return new LastContinuumStatus(_lastRetrieval, _continuum.StatusItems.Take(count));
 		}
 
 		public (DateTime LastUpate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) GetStatus(int maxItems)
 		{
-			if (DateTime.Now - _lastRetrieval > _retrievalInterval)
-			{
-				_continuum.PollStatus(MAX_COUNT);
-				_zabbix.PollStatus(MAX_COUNT);
-				_lastRetrieval = DateTime.Now;
-			}
 			return (_lastRetrieval, _continuum.StatusItems.Take(maxItems), _zabbix.StatusItems.Take(maxItems));
 		}
 
@@ -120,6 +109,10 @@ namespace ServerStatus.Services
 			return (ContinuumStatus.Select(o => o.Severity),ZabbixStatus.Select(o=>o.Priority));
 		}
 
-}
+		public bool ConfirmContinuumPipelineStep(string instanceId, string phase, string stage, int stepIndex, string response, string outputKey, bool confirm)
+		{
+			return _continuum.ConfirmContinuumPipelineStep(instanceId, phase, stage, stepIndex, response, outputKey, confirm);
+		}
+	}
 
 }
