@@ -22,6 +22,8 @@ namespace ServerStatus.Services
 		private DateTime _lastRetrieval = DateTime.Now - TimeSpan.FromDays(1);
 		private System.Timers.Timer _timer;
 
+		public const string CORS_POLICY = "CorsPolicy";
+
 		public StatusService(IConfiguration configuration, ILogger<StatusService> logger)
 		{
 			_logger = logger;

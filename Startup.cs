@@ -43,7 +43,16 @@ namespace ServerStatus
 		/// <param name="services"></param>
 		public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IStatusService, StatusService>();
+			services.AddCors(options =>
+			{
+				options.AddPolicy(StatusService.CORS_POLICY,
+					builder => builder.AllowAnyOrigin()
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials());
+			});
+
+			services.AddSingleton<IStatusService, StatusService>();
             services.AddMvc();
 
 			// Register the Swagger generator, defining one or more Swagger documents
@@ -89,6 +98,8 @@ namespace ServerStatus
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "ServerStatus V1");
 			});
+
+			app.UseCors(StatusService.CORS_POLICY);
 
 			app.UseStaticFiles();
 

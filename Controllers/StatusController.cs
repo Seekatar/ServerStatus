@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using ServerStatus.Services;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Cors;
 
 namespace ServerStatus.Controllers
 {
@@ -12,6 +13,7 @@ namespace ServerStatus.Controllers
 	/// controller for the API
 	/// </summary>
 	[Route("api/[controller]")]
+	[EnableCors(StatusService.CORS_POLICY)]
 	public class StatusController : Controller
 	{
 		private readonly IStatusService _service;
