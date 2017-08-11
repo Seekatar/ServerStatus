@@ -16,6 +16,7 @@ namespace ServerStatus.Services
 	class StatusService : IStatusService
 	{
 		const int MAX_COUNT = 40;
+		const int ZABBIX_POLL_SECS = 10;
 		private ILogger<StatusService> _logger;
 		private ContinuumService _continuum;
 		private ZabbixService _zabbix;
@@ -42,8 +43,11 @@ namespace ServerStatus.Services
 		{
 			_timer.Enabled = false;
 			_continuum.PollStatus(MAX_COUNT);
-			// TODO UNCOMMENT OUT OR RUN ASYNC_zabbix.PollStatus(MAX_COUNT);
-			_lastRetrieval = DateTime.Now;
+			if ( (DateTime.Now - _lastRetrieval).TotalSeconds > ZABBIX_POLL_SECS )
+			{
+				_zabbix.PollStatus(MAX_COUNT);
+				_lastRetrieval = DateTime.Now;
+			}
 			sendUpdates(_continuum.GetUpdates());
 			_timer.Enabled = true;
 		}
@@ -71,7 +75,7 @@ namespace ServerStatus.Services
 		{
 			_sockets.Add(webSocket);
 			await waitForClose(webSocket);
-			return; 
+			return;
 		}
 
 		private async Task waitForClose(WebSocket webSocket)
@@ -104,7 +108,7 @@ namespace ServerStatus.Services
 				}
 			}
 		}
-		
+
 		public 	(IEnumerable<ContinuumStatus.CtmSeverity> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
 		{
 			(DateTime lastUpdate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) = GetStatus(count);
