@@ -21,7 +21,10 @@ param(
 [ValidateSet("Ok","Fail","Pause")]
 [string] $Type,
 [string] $PiName = "Test",
-[int] $delay = 1
+[int] $StepDelay = 1,
+[int] $sleepTime = 0,
+[string] $desc
+
 )
 
 switch ( $Type )
@@ -35,11 +38,19 @@ switch ( $Type )
 $project = "PesterTestProject"
 $baseUri = "http://hackweek:8080"
 $CtmToken = "5988590a683f2444015568fc"
-$desc = "Test for $Type"
 
+if ( -not $desc )
+{
+	 $desc = "Test for $Type"
+}
 
-Invoke-RestMethod -Uri "$baseUri/api/initiate_pipeline?definition=$name&project=$project&group=Test&details={`"stepDelay`":  $delay,`"description`":`"$desc`",`"name`":`"$piName`"}" `
+Invoke-RestMethod -Uri "$baseUri/api/initiate_pipeline?definition=$name&project=$project&group=Test&details={`"stepDelay`":  $StepDelay,`"description`":`"$desc`",`"name`":`"$piName`"}" `
             -Headers  @{Accept="application/json";Authorization="token $CtmToken"} -Verbose
+
+if ( $sleepTime )
+{
+	Start-Sleep -Seconds $sleepTime
+}
 
 }
 
