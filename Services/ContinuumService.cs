@@ -73,7 +73,6 @@ namespace ServerStatus.Services
 							status = "not run";
 
 						WriteLine($"        {status} -> {msg}");
-						piStatus.TotalSteps++;
 
 						if (step.status != null)
 						{
@@ -111,6 +110,7 @@ namespace ServerStatus.Services
 									break; // not run yet
 							}
 						}
+						piStatus.TotalSteps++;
 					}
 
 				}
