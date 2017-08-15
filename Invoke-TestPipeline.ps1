@@ -21,7 +21,7 @@ param(
 [ValidateSet("Ok","Fail","Pause")]
 [string] $Type,
 [string] $PiName = "Test",
-[int] $StepDelay = 1,
+[int] $StepDelay = 2,
 [int] $sleepTime = 0,
 [string] $desc
 
