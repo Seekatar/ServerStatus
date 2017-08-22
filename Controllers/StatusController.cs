@@ -99,7 +99,7 @@ namespace ServerStatus.Controllers
 		/// <param name="count">count of items to return, defaults to 12, max 50</param>
 		/// <returns>Continuum, and Zabbix statuses ids</returns>
 		[HttpGet("statusOnly")] // http://localhost:5000/api/status/statusOnly
-		public (IEnumerable<ContinuumStatus.CtmSeverity> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
+		public (IEnumerable<Tuple<ContinuumStatus.CtmSeverity,string>> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
 		{
 			return _service.StatusOnly(count);
 		}
