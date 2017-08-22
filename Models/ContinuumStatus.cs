@@ -12,22 +12,22 @@ namespace ServerStatus.Models
 		/// <summary>
 		/// Map a string from continuum status to the enum
 		/// </summary>
-		/// <param name="severity"></param>
+		/// <param name="status"></param>
 		/// <returns></returns>
-		public static CtmSeverity MapSeverity( string severity )
+		public static PipelineStatus MapStatus( string status )
 		{
-			CtmSeverity result;
-			if (Enum.TryParse<CtmSeverity>(severity, out result))
+			PipelineStatus result;
+			if (Enum.TryParse<PipelineStatus>(status, out result))
 				return result;
 			else
-				return CtmSeverity.notRunYet;
+				return PipelineStatus.notRunYet;
 		}
 
 		/// <summary>
-		/// Severity of the continuum message
+		/// Status of the continuum pipeline
 		/// </summary>
 		/// <remarks>these name match string from continuum so we can use Enum.Parse</remarks>
-		public enum CtmSeverity
+		public enum PipelineStatus
 		{
 			/// <summary>
 			/// The item is staged to run
@@ -54,7 +54,7 @@ namespace ServerStatus.Models
 			/// </summary>
 			notRunYet,
 			/// <summary>
-			/// The item is waiting on a user 
+			/// The item is waiting on a user
 			/// </summary>
 			pending
 		}
@@ -62,16 +62,16 @@ namespace ServerStatus.Models
 		/// <summary>
 		/// constructor
 		/// </summary>
-		/// <param name="severity">The severity.</param>
+		/// <param name="status">The status.</param>
 		/// <param name="name">The name.</param>
 		/// <param name="url">The URL.</param>
 		/// <param name="id">The identifier.</param>
 		/// <param name="pipelineName">Name of the pipeline.</param>
 		/// <param name="group">The group.</param>
 		/// <param name="project">The project.</param>
-		public ContinuumStatus(CtmSeverity severity, string name = "", string url = "", string id = "", string pipelineName = "", string group = "", string project = "" )
+		public ContinuumStatus(PipelineStatus status, string name = "", string url = "", string id = "", string pipelineName = "", string group = "", string project = "" )
 		{
-			Severity = severity;
+			Status = status;
 			Name = name;
 			Url = url;
 			InstanceId = id;
@@ -81,10 +81,10 @@ namespace ServerStatus.Models
 		}
 
 		/// <summary>
-		/// the severity for the pipeline instance
+		/// the status for the pipeline instance
 		/// </summary>
-		[JsonProperty(PropertyName = "severity")]
-		public CtmSeverity Severity { get; set; }
+		[JsonProperty(PropertyName = "status")]
+		public PipelineStatus Status { get; set; }
 		/// <summary>
 		/// the name of the pipeline instance
 		/// </summary>

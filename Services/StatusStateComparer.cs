@@ -7,12 +7,12 @@ namespace ServerStatus.Services
 	{
 		public bool Equals(ContinuumStatus x, ContinuumStatus y)
 		{
-			return string.Equals(x?.InstanceId, y?.InstanceId, System.StringComparison.OrdinalIgnoreCase) && x.Severity == y.Severity;
+			return string.Equals(x?.InstanceId, y?.InstanceId, System.StringComparison.OrdinalIgnoreCase) && x.Status == y.Status;
 		}
 
 		public int GetHashCode(ContinuumStatus obj)
 		{
-			return (obj.InstanceId+obj.Severity.ToString()).GetHashCode();
+			return (obj.InstanceId+obj.Status.ToString()).GetHashCode();
 		}
 	}
 }

@@ -153,30 +153,30 @@ namespace ServerStatus.Services
 						var last = parts.Last();
 						var id = parts[0];
 						var url = String.Format(_continuumLink, parts[0]);
-						var status = new ContinuumStatus(CtmSeverity.processing, parts[1], url, id, parts[2], parts[3], parts[4]);
+						var status = new ContinuumStatus(ContinuumStatus.PipelineStatus.processing, parts[1], url, id, parts[2], parts[3], parts[4]);
 						if (last.Equals("success"))
 						{
-							status.Severity = CtmSeverity.success;
+							status.Status = ContinuumStatus.PipelineStatus.success;
 						}
 						else if (last.Equals("failure"))
 						{
-							status.Severity = CtmSeverity.failure;
+							status.Status = ContinuumStatus.PipelineStatus.failure;
 						}
 						else if (last.Equals("processing"))
 						{
-							status.Severity = isPending(id) ? CtmSeverity.pending : CtmSeverity.processing;
+							status.Status = isPending(id) ? ContinuumStatus.PipelineStatus.pending : ContinuumStatus.PipelineStatus.processing;
 						}
 						else if (last.Equals("staged"))
 						{
-							status.Severity = CtmSeverity.staged;
+							status.Status = ContinuumStatus.PipelineStatus.staged;
 						}
 						else if (last.Equals("canceled"))
 						{
-							status.Severity = CtmSeverity.canceled;
+							status.Status = ContinuumStatus.PipelineStatus.canceled;
 						}
 						else
 						{
-							status.Severity = CtmSeverity.notRunYet;
+							status.Status = ContinuumStatus.PipelineStatus.notRunYet;
 						}
 						statusItems.Add(status);
 						count++;
@@ -187,7 +187,7 @@ namespace ServerStatus.Services
 				lock (_updatedItems)
 				{
 					_updatedItems = statusItems.Except(StatusItems, new StatusComparer()).ToList();
-					_updatedItems.AddRange(statusItems.Where(o => _statusItems.Any(o2 => o2.InstanceId == o.InstanceId && o2.Severity != o.Severity)));
+					_updatedItems.AddRange(statusItems.Where(o => _statusItems.Any(o2 => o2.InstanceId == o.InstanceId && o2.Status != o.Status)));
 					if (_updatedItems.Count > 0)
 					{
 						foreach (var i in _updatedItems)
@@ -201,9 +201,9 @@ namespace ServerStatus.Services
 			catch (Exception e)
 			{
 				_logger.LogCritical(e, $"Error getting continuum data from {uri}");
-				_statusItems.Add(new ContinuumStatus(CtmSeverity.failure,
+                _statusItems.Add(new ContinuumStatus(ContinuumStatus.PipelineStatus.failure,
 					$"Exception getting Continuum data from {uri}"));
-				_statusItems.Add(new ContinuumStatus(CtmSeverity.failure,
+                _statusItems.Add(new ContinuumStatus(ContinuumStatus.PipelineStatus.failure,
 					e.Message));
 			}
 		}
@@ -243,9 +243,9 @@ namespace ServerStatus.Services
 			catch (Exception e)
 			{
 				_logger.LogCritical(e, $"Error getting continuum data from {uri}");
-				_statusItems.Add(new ContinuumStatus(CtmSeverity.failure,
+                _statusItems.Add(new ContinuumStatus(ContinuumStatus.PipelineStatus.failure,
 					$"Exception getting Continuum data from {uri}"));
-				_statusItems.Add(new ContinuumStatus(CtmSeverity.failure,
+                _statusItems.Add(new ContinuumStatus(ContinuumStatus.PipelineStatus.failure,
 					e.Message));
 
 				return false;

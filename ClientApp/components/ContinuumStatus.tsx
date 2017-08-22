@@ -2,7 +2,7 @@ import * as React from 'react';
 import 'isomorphic-fetch';
 
 export interface ContinuumStatusState {
-    severity: number;
+    status: number;
     name: string;
     url: string;
     group: string;
@@ -19,29 +19,32 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
     public status: ContinuumStatusState[];
 
     public render() {
-        return <div className="status">
+        return <div className="status" style={{width:"-webkit-fill-available"}}>
             <h2 className="continuum">Continuum</h2>
             {Object.keys(this.props.status).map(key => ContinuumStatus.renderStatus(key, this.props.status[key]))}
         </div>;
     }
     /*{this.props.status.map(status => ContinuumStatus.renderStatus(status))}*/
 
+    private static onClick(e) {
+        console.log( "got it! "+e)
+    }
 
-    private static mapCtmSeverity(severity: Number) {
-        switch (severity) {
-            case 0: // ContinuumStatus.CtmSeverity.Staged:
+    private static mapCtmStatus(status: Number) {
+        switch (status) {
+            case 0: // ContinuumStatus.CtmStatus.Staged:
                 return "gray";
-            case 1: // ContinuumStatus.CtmSeverity.Running:
+            case 1: // ContinuumStatus.CtmStatus.Running:
                 return "blue";
-            case 2: // ContinuumStatus.CtmSeverity.Ok:
+            case 2: // ContinuumStatus.CtmStatus.Ok:
                 return "green";
-            case 3: // ContinuumStatus.CtmSeverity.Failed:
+            case 3: // ContinuumStatus.CtmStatus.Failed:
                 return "red";
-            case 4: // ContinuumStatus.CtmSeverity.Canceled:
+            case 4: // ContinuumStatus.CtmStatus.Canceled:
                 return "gray";
-            case 5: // ContinuumStatus.CtmSeverity.notRunYet:
+            case 5: // ContinuumStatus.CtmStatus.notRunYet:
                 return "gray";
-            case 6: // ContinuumStatus.CtmSeverity.pending:
+            case 6: // ContinuumStatus.CtmStatus.pending:
                 return "lightblue";
             default:
                 return "black";
@@ -54,7 +57,7 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
                 <defs>
                     <radialGradient id={key} fx="30%" fy="30%">
                         <stop offset="10%" stopColor="lightgray" />
-                        <stop offset="95%" stopColor={ContinuumStatus.mapCtmSeverity(status.severity)} />
+                        <stop offset="95%" stopColor={ContinuumStatus.mapCtmStatus(status.status)} />
                     </radialGradient>
                 </defs>
                 <a href={status.url} target="_blank">
@@ -63,7 +66,7 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
                     </circle>
                 </a>
             </svg>&nbsp;
-            <a className="SS" href={status.url} color={ContinuumStatus.mapCtmSeverity(status.severity)} target="_blank">{status.name} {status.pipelineName} {status.group}</a>
+            <a className="SS" href={status.url} color={ContinuumStatus.mapCtmStatus(status.status)} target="_blank">{status.name} {status.pipelineName} {status.group}</a>
         </div>;
     }
 }

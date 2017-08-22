@@ -65,7 +65,7 @@ export class ServerStatus extends React.Component<{}, StatusResponse> {
         var count = parseInt(this.rowCount());
 
         // ctm 3 = red, zabbix 4,5 = red
-        return this.state.item2.slice(0,count).some( o => { return o.severity == 3; }) || this.state.item3.slice(0,count).some( o => { return o.priority == 4 || o.priority == 5; });
+        return this.state.item2.slice(0,count).some( o => { return o.status == 3; }) || this.state.item3.slice(0,count).some( o => { return o.priority == 4 || o.priority == 5; });
     }
 
     public componentDidUpdate() {

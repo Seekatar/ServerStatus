@@ -38,7 +38,7 @@ namespace ServerStatus.Services
 		/// </summary>
 		/// <param name="count">count of items to return, defaults to 12, max 50</param>
 		/// <returns>Continuum, and Zabbix statuses ids</returns>
-		(IEnumerable<Tuple<ContinuumStatus.CtmSeverity, string>> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12);
+		(IEnumerable<Tuple<ContinuumStatus.PipelineStatus, string>> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12);
 
 		/// <summary>
 		/// called when a websocket client attaches
