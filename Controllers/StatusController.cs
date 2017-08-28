@@ -99,9 +99,20 @@ namespace ServerStatus.Controllers
 		/// <param name="count">count of items to return, defaults to 12, max 50</param>
 		/// <returns>Continuum, and Zabbix statuses ids</returns>
 		[HttpGet("statusOnly")] // http://localhost:5000/api/status/statusOnly
-		public (IEnumerable<Tuple<ContinuumStatus.PipelineStatus,string>> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
+		public (IEnumerable<ContinuumStatus.PipelineStatus> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
 		{
 			return _service.StatusOnly(count);
+		}
+
+		/// <summary>
+		/// Get both Continuum and Zabbix statuses only
+		/// </summary>
+		/// <param name="count">count of items to return, defaults to 12, max 50</param>
+		/// <returns>Continuum, and Zabbix statuses ids</returns>
+		[HttpGet("continuumStatusOnly")] // http://localhost:5000/api/status/continuumStatusOnly
+		public IEnumerable<Tuple<ContinuumStatus.PipelineStatus,string>> ContinuumStatusOnly(int count = 12)
+		{
+			return _service.ContinuumStatusOnly(count);
 		}
 
 	}

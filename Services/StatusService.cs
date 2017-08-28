@@ -109,10 +109,16 @@ namespace ServerStatus.Services
 			}
 		}
 
-		public 	(IEnumerable<Tuple<ContinuumStatus.PipelineStatus, string>> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
+		public 	(IEnumerable<ContinuumStatus.PipelineStatus> ContinuumStatus, IEnumerable<UInt16> ZabbixStatus) StatusOnly(int count = 12)
 		{
 			(DateTime lastUpdate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) = GetStatus(count);
-			return (ContinuumStatus.Select(o => new Tuple<ContinuumStatus.PipelineStatus, string>(o.Status, o.InstanceId)),ZabbixStatus.Select(o=>o.Priority));
+			return (ContinuumStatus.Select(o => o.Status),ZabbixStatus.Select(o=>o.Priority));
+		}
+
+		public IEnumerable<Tuple<ContinuumStatus.PipelineStatus, string>> ContinuumStatusOnly(int count = 12)
+		{
+			(DateTime lastUpdate, IEnumerable<ContinuumStatus> ContinuumStatus, IEnumerable<ZabbixStatus> ZabbixStatus) = GetStatus(count);
+			return ContinuumStatus.Select(o => new Tuple<ContinuumStatus.PipelineStatus, string>(o.Status, o.InstanceId));
 		}
 
 		public bool ConfirmContinuumPipelineStep(string instanceId, string phase, string stage, int stepIndex, string response, string outputKey, bool confirm)

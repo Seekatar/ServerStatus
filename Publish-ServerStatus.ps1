@@ -1,6 +1,6 @@
 ﻿param(
 [Parameter(Mandatory)]
-[ValidateSet("win10-x64","ubuntu.16.04-x64","win8-arm","ubuntu.16.04-arm")]
+[ValidateSet("win-x64","linux-x64","win8-arm","linux-arm")]
 [string] $Runtime,
 [ValidateScript({Test-Path $_ -PathType Container})]
 [string] $Folder
