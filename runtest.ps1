@@ -1,7 +1,6 @@
 # run some tests pipelines
 
-. (Join-Path $PSScriptRoot Invoke-TestPipeline.ps1)
-. .\Invoke-TestPipeline.ps1
+. C:\Development\ServerStatus\Invoke-TestPipeline.ps1
 
 # test start 12 green 
 foreach ($i in (1..12))

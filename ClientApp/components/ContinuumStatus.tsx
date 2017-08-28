@@ -19,7 +19,7 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
     public status: ContinuumStatusState[];
 
     public render() {
-        return <div className="status" style={{width:"-webkit-fill-available"}}>
+        return <div className="status">
             <h2 className="continuum">Continuum</h2>
             {Object.keys(this.props.status).map(key => ContinuumStatus.renderStatus(key, this.props.status[key]))}
         </div>;
