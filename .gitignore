@@ -9,6 +9,8 @@
 *.userosscache
 *.sln.docstates
 appsettings.*.json
+arduino.json
+c_cpp_properties.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -8,20 +8,20 @@ export interface ContinuumStatusState {
     group: string;
     pipelineName: string;
     project: string;
+    instanceId: string;
+    ignored: boolean;
 }
 
-export class ContinuumStatus extends React.Component<{ status: ContinuumStatusState[] }, ContinuumStatusState[]> {
-    constructor(status: ContinuumStatusState[]) {
+export class ContinuumStatus extends React.Component<{ status: ContinuumStatusState[], onCtmIgnore: (id: string) => any }, ContinuumStatusState[]> {
+    constructor() {
         super();
         this.state = null;
-
     }
-    public status: ContinuumStatusState[];
 
     public render() {
         return <div className="status">
             <h2 className="continuum">Continuum</h2>
-            {Object.keys(this.props.status).map(key => ContinuumStatus.renderStatus(key, this.props.status[key]))}
+            {Object.keys(this.props.status).map(key => this.renderStatus(key, this.props.status[key]))}
         </div>;
     }
     /*{this.props.status.map(status => ContinuumStatus.renderStatus(status))}*/
@@ -51,7 +51,7 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
         }
     }
 
-    private static renderStatus(key: string, status: ContinuumStatusState) {
+    private renderStatus(key: string, status: ContinuumStatusState) {
         return <div key={key}>
             <svg className="SS" viewBox="0 0 100 100">
                 <defs>
@@ -60,7 +60,7 @@ export class ContinuumStatus extends React.Component<{ status: ContinuumStatusSt
                         <stop offset="95%" stopColor={ContinuumStatus.mapCtmStatus(status.status)} />
                     </radialGradient>
                 </defs>
-                <a href={status.url} target="_blank">
+                <a onClick={() => this.props.onCtmIgnore(status.instanceId)} target="_blank">
                     <circle className="SS" cx="50" cy="50" r="48" fill={"url(#" + key + ")"}>
                         <title>{status.name}</title>
                     </circle>

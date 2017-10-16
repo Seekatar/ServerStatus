@@ -115,8 +115,8 @@ namespace ServerStatus.Models
 		/// The group.
 		/// </value>
  		[JsonProperty(PropertyName = "group")]
-
 		public string Group { get; private set; }
+
 		/// <summary>
 		/// Gets the project.
 		/// </summary>
